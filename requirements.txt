@@ -1,0 +1,9 @@
+https://github.com/andrejlukic/lunar-lander-ddqn?tab=readme-ov-file
+gymnasium
+gymnasium[box2d]
+numpy
+keras
+keras-rl2
+torch
+tensorflow
+moviepy
