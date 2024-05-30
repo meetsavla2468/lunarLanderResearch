@@ -2,44 +2,18 @@
 
 ## Problem Definition
 
-In the simulation, the spacecraft has a main engine and two lateral
-boosters that can be used to control its descent and the orientation of
-the spacecraft. The spacecraft is subject to the moon's gravitational
-pull, and the engines have an unlimited amount of fuel. The spacecraft
-must navigate to the landing spot between two flags at coordinates (0,0)
-without crashing. Landing outside of the landing pad is possible. The
-lander starts at the top center of the viewport with a random initial
-force applied to its center of mass. The environment has 4 discrete
-actions:
+This research concentrates on the establishment of a powerful form of Deep Reinforcement Learning (DRL) model that can be used for controlling a lunar lander through using OpenAI Gym Lunar Lander v2 environment [2] with Double Deep Q-Network(DDQN). The problem is about enabling an agent to learn the best thrust and orientation maneuvers
+in low gravity circumstances. To achieve fuel efficient, safe landings, it is important that the model remains stable and converges during training. This research seeks to enhance the dependability of autonomous moon landing systems via state of the art DRL techniques.
 
-- 0: do nothing
-- 1: fire left orientation engine
-- 2: fire main engine
-- 3: fire right orientation engine
+A very popular benchmark for lunar landing control problem that has been used over time to evaluate and develop RL algorithms is the OpenAI Gym Lunar Lander
+v2 environment. The simulation in this environment is highly detailed reproducing all complex physical dynamics of a moon landing including lunar gravity (g = 1.625 m/s2), controllable lander thrust with specific impulse and detailed interactions with the lunar surface.
 
-The state is an 8-dimensional vector: the coordinates of the lander in x
-& y, its linear velocities in x & y, its angle, its angular velocity,
-and two booleans that represent whether each leg is in contact with the
-ground or not.
-
-After every step a reward is granted. The total reward of an episode is
-the sum of the rewards for all the steps within that episode.
-
-For each step, the reward:
-
-- is increased/decreased the closer/further the lander is to the
-  landing pad.
-- is increased/decreased the slower/faster the lander is moving.
-- is decreased the more the lander is tilted (angle not horizontal).
-- is increased by 10 points for each leg that is in contact with the
-  ground.
-- is decreased by 0.03 points each frame a side engine is firing.
-- is decreased by 0.3 points each frame the main engine is firing.
-
-The episode receive an additional reward of -100 or +100 points for
-crashing or landing safely respectively. An episode is considered a
-solution if it scores at least 200 points. The episode finishes if the
-lander crashes, flies outside of the viewport of stops moving.
+- State Space: The lander’s current state is represented by an 8-dimensional continuous state space, S. Thisextensive state representation enables DRL agents to havea complete understanding of how the lander behaves dynamically.
+- Action Space: The actions possible in the environment are binary and they can only take values from 0 to 3 as indicated by {0, 1, 2, 3}. Thus, during the descent stages of landing this set of discrete actions will enable DRL agents to steer or control trajectories in midair.
+- Reward Structure: There is a thin reward structure R: S x A → R in the environment that encourages behaviors leading to a successful and efficient landing.
+- Episode Termination: There are two main reasons why episodes end:
+- Successful Landing: Occurs if both feet of the lander lie within a defined area on lunar ground.
+- Crash Landing: Involves severe contact between the lander and the moon’s surface resulting in huge penalties.
 
 This repository contains the code for a research project investigating the application of a Double Deep Q-Network (DDQN) for lunar lander control within the OpenAI Gym Lunar Lander v2 environment.
 
@@ -56,21 +30,24 @@ pip install -r requirements.txt
 ### Running the Experiment:
 
 Train and Evaluate the DDQN agent:
-1) Open the lunarlander-torch.ipynb file
-2) Run the file cell wise
-3) Replace [--hyperparameter1 value1 --hyperparameter2 value2 ...] with optional command-line arguments to adjust hyperparameters (e.g., learning rate, batch size).
+
+1. Open the lunarlander-torch.ipynb file
+2. Run the file cell wise
+3. Replace [--hyperparameter1 value1 --hyperparameter2 value2 ...] with optional command-line arguments to adjust hyperparameters (e.g., learning rate, batch size).
 
 Follow above steps for lunarlander-tfkeras to train and visualize the model in tfkeras
 
 ### Visualizing the results
 
-1) Run the visual_comparison.ipynb file to compare and simulate results from different models
+1. Run the visual_comparison.ipynb file to compare and simulate results from different models
 
 ### File Structure:
+
 lunarlander-tfkeras: Script for training the DDQN agent and evaluating the trained DDQN agent in tensorflow and keras.
 lunarlander-torch: Script for training the DDQN agent and evaluating the trained DDQN agent in torch.
 ddqn_torch_model.h5 : Trained DDQN model.
 requirements.txt: Text file listing required Python libraries.
 
 ### Further Notes:
+
 Training the DDQN agent can be computationally expensive. Adjust hyperparameters and training time based on your hardware resources.
